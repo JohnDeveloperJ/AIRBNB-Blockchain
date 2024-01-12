@@ -23,36 +23,69 @@ contract Airbnb is Ownable {
     event RentalCreated(
         uint256 indexed id,
         string name,
-        string city
-        // other fields
+        string city,
+        int256 lat,
+        int256 long,
+        string unoDescription,
+        string dosDescription,
+        string imgUrl,
+        uint256 maxGuests,
+        uint256 pricePerDay,
+        string[] datesBooked
     );
 
     event NewDatesBooked(
         uint256 indexed id,
         string[] datesBooked
-        // other fields
     );
 
     mapping(uint256 => RentalInfo) public rentals;
 
-    constructor() {
+    constructor() Ownable(msg.sender) {
         counter = 0;
     }
 
     function addRentals(
         string memory name,
-        // other parameters
+        string memory city,
+        int256 lat,
+        int256 long,
+        string memory unoDescription,
+        string memory dosDescription,
+        string memory imgUrl,
+        uint256 maxGuests,
+        uint256 pricePerDay,
+        string[] memory datesBooked
     ) public onlyOwner {
-        // function logic
+        RentalInfo storage newRental = rentals[counter];
+        newRental.name = name;
+        newRental.city = city;
+        newRental.lat = lat;
+        newRental.long = long;
+        newRental.unoDescription = unoDescription;
+        newRental.dosDescription = dosDescription;
+        newRental.imgUrl = imgUrl;
+        newRental.maxGuests = maxGuests;
+        newRental.pricePerDay = pricePerDay;
+        newRental.datesBooked = datesBooked;
+        newRental.id = counter;
+
+        emit RentalCreated(counter, name, city, lat, long, unoDescription, dosDescription, imgUrl, maxGuests, pricePerDay, datesBooked);
+        
+        counter++;
     }
 
-    function addDatesBooked(uint256 id, string[] memory newBookings) public payable {
-        // function logic
+    function addDatesBooked(uint256 id, string[] memory newBookings) public payable rentalExists(id) {
+        require(msg.value == rentals[id].pricePerDay * 1 ether * newBookings.length, "Incorrect payment amount");
+        for (uint256 i = 0; i < newBookings.length; i++) {
+            rentals[id].datesBooked.push(newBookings[i]);
+        }
+        emit NewDatesBooked(id, newBookings);
     }
 
-    function getRental(uint256 id) public view returns (RentalInfo memory) {
-        require(id < counter,
-    // ... [previous code]
+    function getRental(uint256 id) public view rentalExists(id) returns (RentalInfo memory) {
+        return rentals[id];
+    }
 
     modifier rentalExists(uint256 id) {
         require(id < counter, "No such Rental");
@@ -64,24 +97,25 @@ contract Airbnb is Ownable {
     }
 
     function adjustPrice(uint256 id, uint256 newPricePerDay) public onlyOwner rentalExists(id) {
-        // Implement dynamic pricing adjustment
+        rentals[id].pricePerDay = newPricePerDay;
     }
 
     function leaveReview(uint256 id, string memory review) public rentalExists(id) {
         // Implement review system
     }
 
-    function checkAvailability(uint256 id, uint256 startDate, uint256 endDate) public view rentalExists(id) returns (bool) {
-        // Implement availability check
-    }
+function checkAvailability(uint256 id, uint256 startDate, uint256 endDate) public view rentalExists(id) {
+    // Code logic for checking rental availability
+}
 
-    function pauseContract() public onlyOwner {
-        // Implement circuit breaker pattern
-    }
+function pauseContract() public onlyOwner {
+    // Implement circuit breaker pattern
+    // Placeholder for pausing the contract
+}
 
-    function resumeContract() public onlyOwner {
-        // Resume contract functionality
-    }
+function resumeContract() public onlyOwner {
+    // Resume contract functionality
+    // Placeholder for resuming the contract
+}
 
-    // ... [any additional functions]
 }
