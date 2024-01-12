@@ -65,10 +65,9 @@ Contributions to the project are welcome!
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Contact
-Your Name - [your-email@example.com](mailto:your-email@example.com)
 
-Project Link: [https://github.com/your-username/airbnb-smart-contract](https://github.com/your-username/airbnb-smart-contract)
+
+Project Link: [[https://github.com/your-username/airbnb-smart-contract](https://github.com/your-username/airbnb-smart-contract)](https://github.com/JohnDeveloperJ/AIRBNB-Blockchain.git)
 ```
 
 Feel free to modify this template according to the specifics of your project, such as adding more detailed descriptions, instructions, or any other relevant information. This README template provides a solid foundation for presenting your project in a professional and clear manner.
