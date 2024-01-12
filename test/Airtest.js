@@ -7,7 +7,6 @@ describe("AIRBNB Contract", function () {
 
     beforeEach(async function () {
         [owner, renter1, renter2] = await ethers.getSigners();
-
         const AIRBNB = await ethers.getContractFactory("Airbnb", owner);
         airbnb = await AIRBNB.deploy();
     });
@@ -40,6 +39,7 @@ describe("AIRBNB Contract", function () {
             await expect(
                 airbnb.connect(renter1).addDatesBooked(0, ["2024-07-01"], { value: ethers.utils.parseEther("1.0") })
             ).to.emit(airbnb, "NewDatesBooked");
+            // Add assertions to verify the booking
         });
 
         it("should not allow booking on already booked dates", async function () {
@@ -47,6 +47,7 @@ describe("AIRBNB Contract", function () {
             await expect(
                 airbnb.connect(renter2).addDatesBooked(0, ["2024-07-01"], { value: ethers.utils.parseEther("1.0") })
             ).to.be.reverted;
+            // Add specific revert message if applicable
         });
     });
 
