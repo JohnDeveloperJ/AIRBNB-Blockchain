@@ -23,7 +23,7 @@ To set up the project on your local machine:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/airbnb-smart-contract.git
+   gh repo clone JohnDeveloperJ/AIRBNB-Blockchain
    cd airbnb-smart-contract
    ```
 
